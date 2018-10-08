@@ -72,15 +72,15 @@ def show_eigvec(eigvec, cumEigval, refSize, energyTh):
         if(cumEigval[idx] < energyTh):
             img = np.reshape(eigvec[:,idx],(refSize[0],refSize[1]))
             print("eigenvector: {} cumEnergy: {} of shape: {}".format(idx, cumEigval[idx], img.shape))
-            imgplot = plt.imshow(img)
-            plt.show()
+            #imgplot = plt.imshow(img)
+            #plt.show()
         else:
             break
 
 def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval):
     # projection
-    feat = np.expand_dims(featTest,1)- meanFaces
-    norm = feat / stddFaces
+    feat = np.expand_dims(featTest,1)- np.expand_dims(meanFaces,1)
+    norm = feat / np.expand_dims(stddFaces,1)
     weights = np.inner(np.transpose(eigvec[:,0:numSignificantEigval-1]), np.transpose(norm))
     # reconstruction
     recon = 0*np.squeeze(feat)
@@ -140,5 +140,5 @@ except:
     rmse = opts['inf']
 
 # final output
-print('rmse on compressed test image: {} (lower the better)'.format(rmse))
 print('time elapsed: {}'.format(time.time() - start))
+print('rmse on compressed test image: {} (lower the better)'.format(rmse))

@@ -126,5 +126,5 @@ except:
     sse = opts['inf']
     
 # final output
-print("total sum of squared error: {} (lower the better)".format(sse))
 print('time elapsed: {}'.format(time.time() - start))
+print("total sum of squared error: {} (lower the better)".format(sse))

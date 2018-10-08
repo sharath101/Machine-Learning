@@ -37,10 +37,10 @@ def load_data(fname):
     x_ = np.ones([len(y_),2]) 
     x_[:,0] = points[:,0]
     # display plot
-    plt.plot(x_[:,0], y_, 'ro')
-    plt.xlabel('x-axis')
-    plt.ylabel('y-axis')
-    plt.show()
+    #plt.plot(x_[:,0], y_, 'ro')
+    #plt.xlabel('x-axis')
+    #plt.ylabel('y-axis')
+    #plt.show()
     print('data loaded. x:{} y:{}'.format(x_.shape, y_.shape))
     return x_, y_
 
@@ -87,5 +87,5 @@ except:
     cost = optimizer['inf']
 
 # final output
-print('cost at convergence: {} (lower the better)'.format(cost))
 print('time elapsed: {}'.format(time.time() - start))
+print('cost at convergence: {} (lower the better)'.format(cost))

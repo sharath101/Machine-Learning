@@ -133,5 +133,5 @@ except:
     f1ScoreReport = opts['inf']
     
 # final output
-print("lowest 1-f1Score: {} (lower the better)".format(f1ScoreReport))
 print('time elapsed: {}'.format(time.time() - start))
+print("lowest 1-f1Score: {} (lower the better)".format(f1ScoreReport))
