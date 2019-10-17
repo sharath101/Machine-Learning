@@ -1,4 +1,6 @@
-The assignment consists of three problems based on basic machine learning and computer vision. 
+**If you are forking the project to your gitlab account, please make sure your repo is private**
+
+The assignment consists of three problems based on basic machine learning and one on computer vision. 
 Numerous problems in these areas are well studied in statistics and applied mathematics. 
 Solutions are to be implemented in python by filling out required functions in each python file. 
 A basic framework for data i/o and evaluation is already provided (see header comments in each python file).
