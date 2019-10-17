@@ -60,32 +60,33 @@ optimizer = {'init_params':np.array([4.5,2.0]) ,
              'eps':0.0000001,
              'inf':1e10}
 
-# load data
-x_, y_ = load_data("./data/1_points.csv")
+if __name__ == "__main__":
+    # load data
+    x_, y_ = load_data("./data/1_points.csv")
 
-# time stamp
-start = time.time()
+    # time stamp
+    start = time.time()
 
-try:
-    # gradient descent
-    params = optimizer['init_params']
-    old_cost = 1e10
-    for iter_ in range(optimizer['max_iterations']):
-        # evaluate cost and gradient
-        cost = evaluate_cost(x_,y_,params)
-        grad = evaluate_gradient(x_,y_,params)
-        # display
-        if(iter_ % 10 == 0):
-            print('iter: {} cost: {} params: {}'.format(iter_, cost, params))
-        # check convergence
-        if(abs(old_cost - cost) < optimizer['eps']):
-            break
-        # udpate parameters
-        params = update_params(params,grad,optimizer['alpha'])
-        old_cost = cost
-except:
-    cost = optimizer['inf']
+    try:
+        # gradient descent
+        params = optimizer['init_params']
+        old_cost = 1e10
+        for iter_ in range(optimizer['max_iterations']):
+            # evaluate cost and gradient
+            cost = evaluate_cost(x_,y_,params)
+            grad = evaluate_gradient(x_,y_,params)
+            # display
+            if(iter_ % 10 == 0):
+                print('iter: {} cost: {} params: {}'.format(iter_, cost, params))
+            # check convergence
+            if(abs(old_cost - cost) < optimizer['eps']):
+                break
+            # udpate parameters
+            params = update_params(params,grad,optimizer['alpha'])
+            old_cost = cost
+    except:
+        cost = optimizer['inf']
 
-# final output
-print('time elapsed: {}'.format(time.time() - start))
-print('cost at convergence: {} (lower the better)'.format(cost))
+    # final output
+    print('time elapsed: {}'.format(time.time() - start))
+    print('cost at convergence: {} (lower the better)'.format(cost))

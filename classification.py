@@ -93,45 +93,49 @@ opts = {'rdir': './data/ETHZShapeClasses-V1.2/',
                 'inf' : 1e10,
         'seed':0}
 
-np.random.seed(opts['seed'])
 
-# time stamp
-start = time.time()
-
-# read the data
-feat,label = read_data(opts['rdir'],
-                       opts['classNames'],
-                       opts['fExt'],
-                       opts['refSize'])
-
-# train test split
-# ref: https://www.youtube.com/watch?v=Bk2-5FoQJr0
-ftrain,ftest,ltrain,ltest = train_test_split(feat,label,opts['trainSplit'])
-
-try:
-    # train test svm classifier
-    # ref: http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-    # ref: https://www.youtube.com/watch?v=N1vOgolbjSc
-    # ref: https://www.youtube.com/watch?v=_PwhiWxHK8o
-    classifier_svm = train_svm(ftrain, ltrain)
-    predicted = test_classifier(ftest, classifier_svm)
-    f1ScoreSVC = eval_performance(predicted,ltest,classifier_svm)
+if __name__ == "__main__":
     
-    # train test random forest classifier
-    # ref: http://scikit-learn.org/stable/modules/ensemble.html
-    # ref: https://www.youtube.com/watch?v=3kYujfDgmNk
-    classifier_rf = train_random_forest(ftrain, ltrain)
-    predicted = test_classifier(ftest, classifier_rf)
-    f1ScoreRF = eval_performance(predicted,ltest,classifier_rf)
-    
-    # print report
-    # ref: https://www.youtube.com/watch?v=2akd6uwtowc
-    print("f1 scores: (svm) {} , (rf) {}".format(f1ScoreSVC, f1ScoreRF))
-    f1ScoreBest = f1ScoreSVC if(f1ScoreSVC>f1ScoreRF) else f1ScoreRF
-    f1ScoreReport = 1-f1ScoreBest
-except:
-    f1ScoreReport = opts['inf']
-    
-# final output
-print('time elapsed: {}'.format(time.time() - start))
-print("lowest 1-f1Score: {} (lower the better)".format(f1ScoreReport))
+
+    np.random.seed(opts['seed'])
+
+    # time stamp
+    start = time.time()
+
+    # read the data
+    feat,label = read_data(opts['rdir'],
+                        opts['classNames'],
+                        opts['fExt'],
+                        opts['refSize'])
+
+    # train test split
+    # ref: https://www.youtube.com/watch?v=Bk2-5FoQJr0
+    ftrain,ftest,ltrain,ltest = train_test_split(feat,label,opts['trainSplit'])
+
+    try:
+        # train test svm classifier
+        # ref: http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+        # ref: https://www.youtube.com/watch?v=N1vOgolbjSc
+        # ref: https://www.youtube.com/watch?v=_PwhiWxHK8o
+        classifier_svm = train_svm(ftrain, ltrain)
+        predicted = test_classifier(ftest, classifier_svm)
+        f1ScoreSVC = eval_performance(predicted,ltest,classifier_svm)
+        
+        # train test random forest classifier
+        # ref: http://scikit-learn.org/stable/modules/ensemble.html
+        # ref: https://www.youtube.com/watch?v=3kYujfDgmNk
+        classifier_rf = train_random_forest(ftrain, ltrain)
+        predicted = test_classifier(ftest, classifier_rf)
+        f1ScoreRF = eval_performance(predicted,ltest,classifier_rf)
+        
+        # print report
+        # ref: https://www.youtube.com/watch?v=2akd6uwtowc
+        print("f1 scores: (svm) {} , (rf) {}".format(f1ScoreSVC, f1ScoreRF))
+        f1ScoreBest = f1ScoreSVC if(f1ScoreSVC>f1ScoreRF) else f1ScoreRF
+        f1ScoreReport = 1-f1ScoreBest
+    except:
+        f1ScoreReport = opts['inf']
+        
+    # final output
+    print('time elapsed: {}'.format(time.time() - start))
+    print("lowest 1-f1Score: {} (lower the better)".format(f1ScoreReport))

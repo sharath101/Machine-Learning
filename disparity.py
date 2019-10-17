@@ -46,11 +46,11 @@ def read_data(root,downsample=10):
 
 # lower the better
 def compute_patch_similarity(ref,tgt):
-    pass
+    pass 
 
 # compute closest patch distance
 def similarity_to_disparity(dissimilarity_array, pos):
-    pass
+    pass 
     
 def compute_patch_disparity(patch, patchpos, row):
     # sum of absolute error array
@@ -91,40 +91,42 @@ opts = {'rdir': './data/cones/',
         'downsample': 4,
         'inf' : 1e10}
 
-# time stamp
-start = time.time()
 
-# read the data
-view1,view2,gth12,gth21 = read_data(opts['rdir'],opts['downsample'])
+if __name__ == "__main__":
+    # time stamp
+    start = time.time()
 
-try:
-    disp12 = compute_disparity(view1, view2, opts['halfPatchSize'])
-    disp21 = compute_disparity(view2, view1, opts['halfPatchSize'])
-    sse = np.sum(np.power((disp12-gth12),2)) + np.sum(np.power((disp21-gth21),2))
-    sse /= (disp12.shape[0]*disp12.shape[1])
-    
-    # display results
-    plt.subplot(321)
-    plt.imshow(view1)
-    plt.title('view1')
-    plt.subplot(322)
-    plt.imshow(view2)
-    plt.title('view2')
-    plt.subplot(323)
-    plt.imshow(gth12)
-    plt.title('gth12')
-    plt.subplot(324)
-    plt.imshow(gth21)
-    plt.title('gth21')
-    plt.subplot(325)
-    plt.imshow(disp12)
-    plt.title('computed12')
-    plt.subplot(326)
-    plt.imshow(disp21)
-    plt.title('computed21')
-except:
-    sse = opts['inf']
-    
-# final output
-print('time elapsed: {}'.format(time.time() - start))
-print("total sum of squared error: {} (lower the better)".format(sse))
+    # read the data
+    view1,view2,gth12,gth21 = read_data(opts['rdir'],opts['downsample'])
+
+    try:
+        disp12 = compute_disparity(view1, view2, opts['halfPatchSize'])
+        disp21 = compute_disparity(view2, view1, opts['halfPatchSize'])
+        sse = np.sum(np.power((disp12-gth12),2)) + np.sum(np.power((disp21-gth21),2))
+        sse /= (disp12.shape[0]*disp12.shape[1])
+        
+        # display results
+        plt.subplot(321)
+        plt.imshow(view1)
+        plt.title('view1')
+        plt.subplot(322)
+        plt.imshow(view2)
+        plt.title('view2')
+        plt.subplot(323)
+        plt.imshow(gth12)
+        plt.title('gth12')
+        plt.subplot(324)
+        plt.imshow(gth21)
+        plt.title('gth21')
+        plt.subplot(325)
+        plt.imshow(disp12)
+        plt.title('computed12')
+        plt.subplot(326)
+        plt.imshow(disp21)
+        plt.title('computed21')
+    except:
+        sse = opts['inf']
+        
+    # final output
+    print('time elapsed: {}'.format(time.time() - start))
+    print("total sum of squared error: {} (lower the better)".format(sse))

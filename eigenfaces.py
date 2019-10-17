@@ -98,47 +98,50 @@ opts = {'dirName': './data/lfw2_subset',
         'eps' : 1e-10,
         'inf' : 1e10}
 
-# time stamp
-start = time.time()
 
-try:
-    # extract features of all faces
-    featFaces, featTest = readImages(opts['dirName'],opts['refSize'],opts['fExt'])
-    print("featFaces: {}, featTest {}".format(featFaces.shape, featTest.shape))
-    
-    
-    # extract mean face
-    meanFaces, stddFaces = extract_mean_stdd_faces(featFaces)
-    print("meanFaces: {}, stddFaces: {}".format(meanFaces.shape, stddFaces.shape))
-    
-    # normalize faces
-    # ref: https://stats.stackexchange.com/questions/69157/why-do-we-need-to-normalize-data-before-principal-component-analysis-pca
-    # ref: https://stackoverflow.com/questions/23047235/matlab-how-to-normalize-image-to-zero-and-unit-variance
-    normFaces = normalize_faces(featFaces, meanFaces, stddFaces)
-    print("normFaces: {}".format(normFaces.shape))
+if __name__ == "__main__":
+
+    # time stamp
+    start = time.time()
+
+    try:
+        # extract features of all faces
+        featFaces, featTest = readImages(opts['dirName'],opts['refSize'],opts['fExt'])
+        print("featFaces: {}, featTest {}".format(featFaces.shape, featTest.shape))
         
-    # covariance matrix
-    covrFaces = compute_covariance_matrix(normFaces) + opts['eps']
-    print("covrFaces: {}".format(covrFaces.shape))
-    
-    # eigenvalues and eigenvectors
-    eigval, eigvec = compute_eigval_eigvec(covrFaces)
-    print("eigval: {} eigvec: {}".format(eigval.shape, eigvec.shape))
-    
-    # find number of eigvenvalues cumulatively smaller than energhTh
-    cumEigval = np.cumsum(eigval / sum(eigval))
-    numSignificantEigval = next(i for i,v in enumerate(cumEigval) if v > opts['energyTh'])
-    
-    # show top 90% eigenvectors
-    # call this function to visualize eigenvectors
-    show_eigvec(eigvec, cumEigval, opts['refSize'],opts['energyTh'])
-    
-    # reconstruct test image
-    rmse = reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval)
-    print('#eigval preserving {}% of energy: {}'.format(100*opts['energyTh'],numSignificantEigval))
-except:
-    rmse = opts['inf']
+        
+        # extract mean face
+        meanFaces, stddFaces = extract_mean_stdd_faces(featFaces)
+        print("meanFaces: {}, stddFaces: {}".format(meanFaces.shape, stddFaces.shape))
+        
+        # normalize faces
+        # ref: https://stats.stackexchange.com/questions/69157/why-do-we-need-to-normalize-data-before-principal-component-analysis-pca
+        # ref: https://stackoverflow.com/questions/23047235/matlab-how-to-normalize-image-to-zero-and-unit-variance
+        normFaces = normalize_faces(featFaces, meanFaces, stddFaces)
+        print("normFaces: {}".format(normFaces.shape))
+            
+        # covariance matrix
+        covrFaces = compute_covariance_matrix(normFaces) + opts['eps']
+        print("covrFaces: {}".format(covrFaces.shape))
+        
+        # eigenvalues and eigenvectors
+        eigval, eigvec = compute_eigval_eigvec(covrFaces)
+        print("eigval: {} eigvec: {}".format(eigval.shape, eigvec.shape))
+        
+        # find number of eigvenvalues cumulatively smaller than energhTh
+        cumEigval = np.cumsum(eigval / sum(eigval))
+        numSignificantEigval = next(i for i,v in enumerate(cumEigval) if v > opts['energyTh'])
+        
+        # show top 90% eigenvectors
+        # call this function to visualize eigenvectors
+        show_eigvec(eigvec, cumEigval, opts['refSize'],opts['energyTh'])
+        
+        # reconstruct test image
+        rmse = reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval)
+        print('#eigval preserving {}% of energy: {}'.format(100*opts['energyTh'],numSignificantEigval))
+    except:
+        rmse = opts['inf']
 
-# final output
-print('time elapsed: {}'.format(time.time() - start))
-print('rmse on compressed test image: {} (lower the better)'.format(rmse))
+    # final output
+    print('time elapsed: {}'.format(time.time() - start))
+    print('rmse on compressed test image: {} (lower the better)'.format(rmse))
