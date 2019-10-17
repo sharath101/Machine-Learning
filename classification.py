@@ -109,7 +109,7 @@ if __name__ == "__main__":
                         opts['refSize'])
 
     # train test split
-    # ref: https://www.youtube.com/watch?v=Bk2-5FoQJr0
+    # ref: https://www.youtube.com/watch?v=lSwvUmZCvco
     ftrain,ftest,ltrain,ltest = train_test_split(feat,label,opts['trainSplit'])
 
     try:
@@ -129,7 +129,7 @@ if __name__ == "__main__":
         f1ScoreRF = eval_performance(predicted,ltest,classifier_rf)
         
         # print report
-        # ref: https://www.youtube.com/watch?v=2akd6uwtowc
+        # ref: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
         print("f1 scores: (svm) {} , (rf) {}".format(f1ScoreSVC, f1ScoreRF))
         f1ScoreBest = f1ScoreSVC if(f1ScoreSVC>f1ScoreRF) else f1ScoreRF
         f1ScoreReport = 1-f1ScoreBest
