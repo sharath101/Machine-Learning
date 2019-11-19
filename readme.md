@@ -1,5 +1,38 @@
 **If you are forking the project to your gitlab account, please make sure your repo is private**
 
+> Getting started:
+
+1. Fork this repository
+
+2. Clone(download) the forked repository to your computer using the command: 
+`git clone https://gitlab.com/<gitlab-username>/mlabs-2019-problem-set.git`
+
+3. Setup a virtual environment to run the files without dependency issues
+	1. Install virtualenv package: 
+		`pip install virtualenv`
+	2. Create a virtual environment: 
+		`virtualenv mlabs`
+	3. Activate the environment
+		a. Windows: 
+			`mlabs\Scripts\activate`
+		b. Ubuntu: 
+			`source mlabs/bin/activate`
+		
+		You'll see the command line starting with **(mlabs)**
+	
+	**From the next time onwards you need only do Step 3 before starting to work on the problems**
+	
+4. Change working directory to the problem set folder: 
+`cd mlabs-2019-problem-set`
+
+5. Install the required packages: 
+`pip install -r version_list.txt`
+
+6. Start working on the problem statements. Happy Machine Learning :)
+
+> Keep in mind - **When in trouble Google is always your best friend**
+
+
 The assignment consists of three problems based on basic machine learning and one on computer vision. 
 Numerous problems in these areas are well studied in statistics and applied mathematics. 
 Solutions are to be implemented in python by filling out required functions in each python file. 
