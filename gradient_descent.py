@@ -45,13 +45,25 @@ def load_data(fname):
     return x_, y_
 
 def evaluate_cost(x_,y_,params):
-    pass
+    m=len(y_)
+    h=np.dot(x_,params.T)
+    cost=(1/(2*m))*np.sum((h-y_)**2)
+    return cost
 
 def evaluate_gradient(x_,y_,params):
-    pass
+    m=len(y_)
+    h=np.dot(x_,params.T)
+    grad0=(1/m)*np.sum(np.dot(h-y_,x_[:,1]))
+    grad1=(1/m)*np.sum(h-y_)
+    grad={"g0":grad0,"g1":grad1}
+    return grad
 
 def update_params(old_params, grad, alpha):
-    pass
+    grad0=grad["g0"]
+    grad1=grad["g1"]
+    old_params[0]=old_params[0]-alpha*grad0
+    old_params[1]=old_params[1]-alpha*grad1
+    return old_params
 
 # initialize the optimizer
 optimizer = {'init_params':np.array([4.5,2.0]) , 
