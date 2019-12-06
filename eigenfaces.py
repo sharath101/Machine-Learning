@@ -92,7 +92,7 @@ def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigva
     # reconstruction
     recon = 0*np.squeeze(feat)
     for idx,w in enumerate(weights):
-        recon += w[0]*eigvec[:,idx]
+        recon = recon + w[0]*eigvec[:,idx]
     # rmse 
     diff = recon - np.squeeze(norm)
     rmse = np.sqrt(np.inner(np.transpose(diff) , diff) / len(recon))
