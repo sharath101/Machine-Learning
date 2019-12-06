@@ -79,8 +79,8 @@ def show_eigvec(eigvec, cumEigval, refSize, energyTh):
         if(cumEigval[idx] < energyTh):
             img = np.reshape(eigvec[:,idx],(refSize[0],refSize[1]))
             print("eigenvector: {} cumEnergy: {} of shape: {}".format(idx, cumEigval[idx], img.shape))
-            #imgplot = plt.imshow(img)
-            #plt.show()
+            imgplot = plt.imshow(np.real(img))                                                         #convert to real part to view eigen faces
+            plt.show()
         else:
             break
 
@@ -141,7 +141,7 @@ if __name__ == "__main__":
         
         # show top 90% eigenvectors
         # call this function to visualize eigenvectors
-        show_eigvec(eigvec, cumEigval, opts['refSize'],opts['energyTh'])
+        show_eigvec(eigvec*stddFaces, cumEigval, opts['refSize'],opts['energyTh'])                #multiply by std deviation to view eigen faces
         
         # reconstruct test image
         rmse = reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval)
