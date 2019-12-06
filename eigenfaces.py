@@ -31,7 +31,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import scipy
+import scipy.misc                              # doesn't read if only scipy is imported
 import os
 import time
 
@@ -56,16 +56,23 @@ def readImages(dirName,refSize,fExt):
     return imFeatTrain, imFeatTest
 
 def extract_mean_stdd_faces(featFaces):
-    pass
+    mean=np.mean(featFaces,axis=1,keepdims= True)
+    stdd=np.std(featFaces,axis=1,keepdims=True)
+    #print(mean)
+    return mean,stdd
 
 def normalize_faces(featFaces, meanFaces, stddFaces):
-    pass
+    std=featFaces-meanFaces
+    norm=np.divide(std,stddFaces)
+    return norm
 
 def compute_covariance_matrix(normFaces):
-    pass
+    cov=np.cov(normFaces)
+    return cov
 
 def compute_eigval_eigvec(covrFaces):
-    pass
+    a,b=np.linalg.eig(covrFaces)
+    return a,b
 
 def show_eigvec(eigvec, cumEigval, refSize, energyTh):
     for idx in range(len(cumEigval)):
