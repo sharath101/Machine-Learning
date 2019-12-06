@@ -79,8 +79,8 @@ def show_eigvec(eigvec, cumEigval, refSize, energyTh):
         if(cumEigval[idx] < energyTh):
             img = np.reshape(eigvec[:,idx],(refSize[0],refSize[1]))
             print("eigenvector: {} cumEnergy: {} of shape: {}".format(idx, cumEigval[idx], img.shape))
-            imgplot = plt.imshow(np.real(img*255))                                                    #multiply by 255 as they are unit length 
-            plt.show()                                                                                #eigen vectors and then find real part
+            imgplot = plt.imshow(np.real(img))                                                            #real part 
+            plt.show()
         else:
             break
 
