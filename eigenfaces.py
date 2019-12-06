@@ -58,7 +58,6 @@ def readImages(dirName,refSize,fExt):
 def extract_mean_stdd_faces(featFaces):
     mean=np.mean(featFaces,axis=1,keepdims= True)
     stdd=np.std(featFaces,axis=1,keepdims=True)
-    #print(mean)
     return mean,stdd
 
 def normalize_faces(featFaces, meanFaces, stddFaces):
@@ -84,18 +83,26 @@ def show_eigvec(eigvec, cumEigval, refSize, energyTh):
         else:
             break
 
-def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval):
-    # projection
-    feat = np.expand_dims(featTest,1)- np.expand_dims(meanFaces,1)
-    norm = feat / np.expand_dims(stddFaces,1)
+def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval):        #Changes made to reconstruct test to account for
+    # projection                                                                            dimensional error
+    #print("mean" , meanFaces.shape)
+    feat = np.expand_dims(featTest,1)- meanFaces
+    #print("feat" , feat.shape)
+    norm = feat / stddFaces
+    #print("norm" , norm.shape)
     weights = np.inner(np.transpose(eigvec[:,0:numSignificantEigval-1]), np.transpose(norm))
+    #print("weights" , weights.shape)
     # reconstruction
-    recon = 0*np.squeeze(feat)
+    recon = 0*np.squeeze(feat)                                                             #removing np.squeeze here and on line 103 will give
+    #print("recon",recon.shape)                                                             rmse as a matrix
+    #print("eigveg",eigvec.shape)
     for idx,w in enumerate(weights):
         recon = recon + w[0]*eigvec[:,idx]
     # rmse 
     diff = recon - np.squeeze(norm)
-    rmse = np.sqrt(np.inner(np.transpose(diff) , diff) / len(recon))
+    #print("diff",diff)
+    #print(np.inner(np.transpose(diff) , diff) / len(recon))
+    rmse = np.real(np.sqrt(np.inner(np.transpose(diff) , diff) / len(recon)))
     return rmse
 
 opts = {'dirName': './data/lfw2_subset',
