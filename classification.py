@@ -45,15 +45,22 @@ def train_test_split(fdata,ldata,trainSize):
     return ftrain, ftest, ltrain, ltest
 
 def train_random_forest(feat,label):
-    pass
+    model=ensemble.RandomForestClassifier(n_estimators= 21,min_samples_split= 5,min_samples_leaf=4,max_features='auto',max_depth=80,bootstrap=True,random_state=0)
+    model.fit(feat,label)
+    return model
 
 def train_svm(feat,label):
-    pass
+    model=svm.SVC(kernel='poly',degree=2)
+    model.fit(feat,label)
+    return model
     
 def test_classifier(ftest,classifier):
-    pass
+    pred = classifier.predict(ftest)
+    return pred
     
 def eval_performance(pred,ltest,classifier):
+    #print(metrics.confusion_matrix(ltest,pred))
+    #print(metrics.classification_report(ltest,pred))
     return metrics.f1_score(ltest, pred)
 
 def read_data(rdir,cNames,fExt,refSize):
