@@ -70,7 +70,7 @@ def compute_covariance_matrix(normFaces):
     return cov
 
 def compute_eigval_eigvec(covrFaces):
-    a,b=scipy.linalg.eig(covrFaces)
+    a,b=np.linalg.eig(covrFaces)
     return a,b
 
 def show_eigvec(eigvec, cumEigval, refSize, energyTh):
