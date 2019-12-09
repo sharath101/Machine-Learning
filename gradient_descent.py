@@ -53,7 +53,7 @@ def evaluate_cost(x_,y_,params):
 def evaluate_gradient(x_,y_,params):
     m=len(y_)
     h=np.dot(x_,params.T)
-    grad0=(1/m)*np.sum(np.dot(h-y_,x_[:,1]))
+    grad0=(1/m)*np.sum(np.inner(h-y_,x_[:,0]))
     grad1=(1/m)*np.sum(h-y_)
     grad={"g0":grad0,"g1":grad1}
     return grad
@@ -68,7 +68,7 @@ def update_params(old_params, grad, alpha):
 # initialize the optimizer
 optimizer = {'init_params':np.array([4.5,2.0]) , 
              'max_iterations':10000, 
-             'alpha':0.00001, 
+             'alpha':1, 
              'eps':0.0000001,
              'inf':1e10}
 
