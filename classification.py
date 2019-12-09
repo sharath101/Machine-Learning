@@ -50,7 +50,7 @@ def train_random_forest(feat,label):
     return model
 
 def train_svm(feat,label):
-    model=svm.SVC(kernel='poly',degree=2)
+    model=svm.SVC()
     model.fit(feat,label)
     return model
     
