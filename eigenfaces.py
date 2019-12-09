@@ -31,7 +31,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import scipy.misc                              # doesn't read if only scipy is imported
+import scipy
 import os
 import time
 
