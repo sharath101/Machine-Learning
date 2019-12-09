@@ -78,30 +78,22 @@ def show_eigvec(eigvec, cumEigval, refSize, energyTh):
         if(cumEigval[idx] < energyTh):
             img = np.reshape(eigvec[:,idx],(refSize[0],refSize[1]))
             print("eigenvector: {} cumEnergy: {} of shape: {}".format(idx, cumEigval[idx], img.shape))
-            imgplot = plt.imshow(np.real(img))                                                            #real part 
-            plt.show()
+            #imgplot = plt.imshow(np.real(img))
+            #plt.show()
         else:
             break
 
-def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval):        #Changes made to reconstruct test to account for
-    # projection                                                                            dimensional error
-    #print("mean" , meanFaces.shape)
+def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval):
+    # projection
     feat = np.expand_dims(featTest,1)- meanFaces
-    #print("feat" , feat.shape)
     norm = feat / stddFaces
-    #print("norm" , norm.shape)
     weights = np.inner(np.transpose(eigvec[:,0:numSignificantEigval-1]), np.transpose(norm))
-    #print("weights" , weights.shape)
     # reconstruction
-    recon = 0*np.squeeze(feat)                                                             #removing np.squeeze here and on line 103 will give
-    #print("recon",recon.shape)                                                             rmse as a matrix
-    #print("eigveg",eigvec.shape)
+    recon = 0*np.squeeze(feat)                                                             
     for idx,w in enumerate(weights):
         recon = recon + w[0]*eigvec[:,idx]
     # rmse 
     diff = recon - np.squeeze(norm)
-    #print("diff",diff)
-    #print(np.inner(np.transpose(diff) , diff) / len(recon))
     rmse = np.real(np.sqrt(np.inner(np.transpose(diff) , diff) / len(recon)))
     return rmse
 
