@@ -31,7 +31,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import scipy.misc
+import scipy.misc                                            #to read
 import os
 import time
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         print("eigval: {} eigvec: {}".format(eigval.shape, eigvec.shape))
         
         # find number of eigvenvalues cumulatively smaller than energhTh
-        cumEigval = np.cumsum(eigval / sum(eigval))
+        cumEigval = np.real(np.cumsum(eigval / sum(eigval)))
         numSignificantEigval = next(i for i,v in enumerate(cumEigval) if v > opts['energyTh'])
         
         # show top 90% eigenvectors
