@@ -54,17 +54,20 @@ def similarity_to_disparity(dissimilarity_array, pos):
     min1=min(dissimilarity_array) 
     i=np.argmin(dissimilarity_array)
     disp=abs(pos-i)
-    if pos<24 or pos>dissimilarity_array.shape[0]-24:           #removing the noise in the sides
+    limit=20/opts['downsample']
+    if pos<limit or pos>dissimilarity_array.shape[0]-limit:           #removing the noise in the sides
         return 120
     if i==0 or i==dissimilarity_array.shape[0]-1:
         if disp*10>255:
             return 150
         else:
-            return disp*8
+            return disp*opts['downsample']*3.9
     c1=dissimilarity_array[i-1]
     c2=min1
     c3=dissimilarity_array[i+1]
-    disp=(disp-(0.5*(c3-c1)/(c1-(2*c2)+c3)))*3.9          #bringing it to 0-255 range
+    disp=(disp-(0.5*(c3-c1)/(c1-(2*c2)+c3)))*opts['downsample']*3.9          #bringing it to 0-255 range
+    #if disp>150 and disp<220:
+    #    disp=disp
     if disp>255:
         disp=160
     return disp
@@ -147,3 +150,4 @@ if __name__ == "__main__":
     # final output
     print('time elapsed: {}'.format(time.time() - start))
     print("total sum of squared error: {} (lower the better)".format(sse))
+
