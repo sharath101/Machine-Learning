@@ -46,11 +46,28 @@ def read_data(root,downsample=10):
 
 # lower the better
 def compute_patch_similarity(ref,tgt):
-    pass 
+    sad=np.sum(abs(tgt.astype("int")-ref.astype("int")))/(ref.shape[0]*ref.shape[1]*ref.shape[2])
+    return sad
 
 # compute closest patch distance
 def similarity_to_disparity(dissimilarity_array, pos):
-    pass 
+    min1=min(dissimilarity_array) 
+    i=np.argmin(dissimilarity_array)
+    disp=abs(pos-i)
+    if pos<24 or pos>dissimilarity_array.shape[0]-24:           #removing the noise in the sides
+        return 120
+    if i==0 or i==dissimilarity_array.shape[0]-1:
+        if disp*10>255:
+            return 150
+        else:
+            return disp*8
+    c1=dissimilarity_array[i-1]
+    c2=min1
+    c3=dissimilarity_array[i+1]
+    disp=(disp-(0.5*(c3-c1)/(c1-(2*c2)+c3)))*3.9          #bringing it to 0-255 range
+    if disp>255:
+        disp=160
+    return disp
     
 def compute_patch_disparity(patch, patchpos, row):
     # sum of absolute error array
@@ -87,8 +104,8 @@ def compute_disparity(view1, view2, psize=5):
     return disp
 
 opts = {'rdir': './data/cones/',
-        'halfPatchSize' : 11,
-        'downsample': 4,
+        'halfPatchSize' : 3,
+        'downsample': 1,
         'inf' : 1e10}
 
 
