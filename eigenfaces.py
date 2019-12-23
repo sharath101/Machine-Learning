@@ -31,7 +31,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import scipy.misc                                            #to read
+import scipy.misc
 import os
 import time
 
@@ -56,13 +56,13 @@ def readImages(dirName,refSize,fExt):
     return imFeatTrain, imFeatTest
 
 def extract_mean_stdd_faces(featFaces):
-    mean=np.mean(featFaces,axis=1,keepdims= True)
-    stdd=np.std(featFaces,axis=1,keepdims=True)
+    mean=np.mean(featFaces,axis=1)
+    stdd=np.std(featFaces,axis=1)
     return mean,stdd
 
 def normalize_faces(featFaces, meanFaces, stddFaces):
-    std=featFaces-meanFaces
-    norm=np.divide(std,stddFaces)
+    std=featFaces-np.expand_dims(meanFaces,1)
+    norm=std / np.expand_dims(stddFaces,1)
     return norm
 
 def compute_covariance_matrix(normFaces):
@@ -71,30 +71,30 @@ def compute_covariance_matrix(normFaces):
 
 def compute_eigval_eigvec(covrFaces):
     a,b=np.linalg.eig(covrFaces)
-    return a,b
+    return np.real(a),np.real(b)
 
 def show_eigvec(eigvec, cumEigval, refSize, energyTh):
     for idx in range(len(cumEigval)):
         if(cumEigval[idx] < energyTh):
             img = np.reshape(eigvec[:,idx],(refSize[0],refSize[1]))
             print("eigenvector: {} cumEnergy: {} of shape: {}".format(idx, cumEigval[idx], img.shape))
-            #imgplot = plt.imshow(np.real(img))
+            #imgplot = plt.imshow(img)
             #plt.show()
         else:
             break
 
 def reconstruct_test(featTest, meanFaces, stddFaces, eigvec, numSignificantEigval):
     # projection
-    feat = np.expand_dims(featTest,1)- meanFaces
-    norm = feat / stddFaces
+    feat = np.expand_dims(featTest,1)- np.expand_dims(meanFaces,1)
+    norm = feat / np.expand_dims(stddFaces,1)
     weights = np.inner(np.transpose(eigvec[:,0:numSignificantEigval-1]), np.transpose(norm))
     # reconstruction
-    recon = 0*np.squeeze(feat)                                                             
+    recon = 0*np.squeeze(feat)
     for idx,w in enumerate(weights):
-        recon = recon + w[0]*eigvec[:,idx]
+        recon += w[0]*eigvec[:,idx]
     # rmse 
     diff = recon - np.squeeze(norm)
-    rmse = np.real(np.sqrt(np.inner(np.transpose(diff) , diff) / len(recon)))
+    rmse = np.sqrt(np.inner(np.transpose(diff) , diff) / len(recon))
     return rmse
 
 opts = {'dirName': './data/lfw2_subset',
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         print("eigval: {} eigvec: {}".format(eigval.shape, eigvec.shape))
         
         # find number of eigvenvalues cumulatively smaller than energhTh
-        cumEigval = np.real(np.cumsum(eigval / sum(eigval)))
+        cumEigval = np.cumsum(eigval / sum(eigval))
         numSignificantEigval = next(i for i,v in enumerate(cumEigval) if v > opts['energyTh'])
         
         # show top 90% eigenvectors
