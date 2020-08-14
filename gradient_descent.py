@@ -11,13 +11,6 @@
 ## function for reading points is provided
 ##
 ##
-## your task: fill the following functions:
-## evaluate_cost
-## evaluate_gradient
-## udpate_params
-## NOTE: do NOT change values of 'init_params' and 'max_iterations' in optimizer
-##
-##
 ## output: cost after convergence (rmse, lower the better)
 ##
 ##
