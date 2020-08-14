@@ -12,13 +12,6 @@
 ## functions for reading images as vectors is provided
 ##
 ##
-## your task: fill the following functions:
-## extract_mean_stdd_faces
-## normalize_faces
-## compute_covariance_matrix
-## compute_eigval_eigvec
-##
-##
 ## output: rmse of the test image preserving 80% energy in eigenvalues
 ## (lower the better)
 ##
