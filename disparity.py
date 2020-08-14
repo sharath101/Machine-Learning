@@ -10,12 +10,6 @@
 ## skeleton to compute the disparity is provided
 ##
 ##
-## your task: fill the following functions
-## compute_patch_similarity (sum of absolute error metric)
-## similarity_to_disparity (patch disparity)
-## NOTE: set hyperparameters 'downsample' and 'patchsize' carefully
-##
-##
 ## output: meanSSE between computed disparity and groundtruth  (lower the better)
 ##
 ## NOTE: see http://mccormickml.com/2014/01/10/stereo-vision-tutorial-part-i/
