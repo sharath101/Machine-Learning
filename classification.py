@@ -9,13 +9,6 @@
 ## functions for reading input features and generating train/test splits are provided.
 ##
 ##
-## your task: using sklearn, fill the following functions
-## train_random_forest
-## train_svm
-## test_classifier
-## NOTE: set the hyperparameters of classifiers appropriately.
-##
-##
 ## output: lowest (1-f1score) between svm and rf classifiers  (lower the better)
 ##
 ##
